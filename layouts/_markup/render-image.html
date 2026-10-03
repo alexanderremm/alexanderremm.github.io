@@ -1,0 +1,8 @@
+{{- if .IsBlock -}}
+<figure>
+    {{ partial "responsive-image.html" (dict "page" .PageInner "src" .Destination "alt" .PlainText) }}
+    {{ with .Title }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>
+{{- else -}}
+    {{- partial "responsive-image.html" (dict "page" .PageInner "src" .Destination "alt" .PlainText "title" .Title) -}}
+{{- end -}}

@@ -1,0 +1,14 @@
+[[projects]]
+title = 'CUDA Image Processing'
+description = 'GPU implementations of image-processing and computer-vision algorithms.'
+technologies = ['C++', 'CUDA', 'Computer Vision']
+
+[[projects]]
+title = 'Camera Systems'
+description = 'Experiments involving camera calibration, distortion correction, demosaicing, and image stitching.'
+technologies = ['Cameras', 'Image Processing']
+
+[[projects]]
+title = 'Game Engine'
+description = 'Experiments building a custom C++ game engine.'
+technologies = ['C++', 'Game Development']

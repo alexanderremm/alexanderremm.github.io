@@ -1,0 +1,22 @@
+{{ define "main" }}
+<header class="page-header">
+    <h1>{{ .Title }}</h1>
+    {{ with .Description }}<p class="page-description">{{ . }}</p>{{ end }}
+</header>
+{{ with .Content }}<div class="article-content">{{ . }}</div>{{ end }}
+<div class="project-grid">
+    {{ range hugo.Data.projects.projects }}
+    <article class="project-card">
+        {{ $project := . }}
+        {{ with .image }}{{ partial "responsive-image.html" (dict "page" $ "src" . "alt" ($project.image_alt | default "") "sizes" "(max-width: 600px) calc(100vw - 40px), 340px") }}{{ end }}
+        <div class="project-card-body">
+            <h2>{{ .title }}</h2>
+            <p>{{ .description }}</p>
+            {{ with .technologies }}<ul class="project-technologies" aria-label="Technologies">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+            {{ with .page }}{{ with site.GetPage . }}<a class="project-link" href="{{ .RelPermalink }}">Read the notes &rarr;</a>{{ end }}{{ end }}
+            {{ with .url }}<a class="project-link" href="{{ . }}">View project &rarr;</a>{{ end }}
+        </div>
+    </article>
+    {{ end }}
+</div>
+{{ end }}

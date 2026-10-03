@@ -1,0 +1,9 @@
+<div class="post-meta">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+    <span class="meta-separator" aria-hidden="true">&middot;</span>
+    <span>{{ .ReadingTime }} min read</span>
+    {{ range .GetTerms "tags" }}
+    <span class="meta-separator" aria-hidden="true">&middot;</span>
+    <a class="post-tag" href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+    {{ end }}
+</div>

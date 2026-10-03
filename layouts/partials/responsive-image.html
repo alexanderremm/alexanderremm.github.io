@@ -1,0 +1,40 @@
+{{- $src := .src -}}
+{{- $image := false -}}
+{{- if not (findRE "^(?:[a-zA-Z][a-zA-Z0-9+.-]*:|//)" $src) -}}
+    {{- $image = .page.Resources.Get $src -}}
+    {{- if not $image }}{{ $image = resources.Get (strings.TrimPrefix "/" $src) }}{{ end -}}
+{{- end -}}
+{{- $sizes := .sizes | default "(max-width: 760px) calc(100vw - 40px), 720px" -}}
+{{- $srcset := slice -}}
+{{- $width := 0 -}}
+{{- $height := 0 -}}
+{{- if $image -}}
+    {{- $src = $image.RelPermalink -}}
+    {{- if reflect.IsImageResourceProcessable $image -}}
+        {{- $width = $image.Width -}}
+        {{- $height = $image.Height -}}
+        {{- /* Keep GIF animation intact; responsive variants for still images only. */ -}}
+        {{- if ne $image.MediaType.SubType "gif" -}}
+            {{- range slice 480 720 1080 -}}
+                {{- if lt . $image.Width -}}
+                    {{- $variant := $image.Resize (printf "%dx webp q85" .) -}}
+                    {{- $srcset = $srcset | append (printf "%s %dw" $variant.RelPermalink $variant.Width) -}}
+                {{- end -}}
+            {{- end -}}
+            {{- $maxWidth := math.Min $image.Width 1440 | int -}}
+            {{- $fallback := $image.Resize (printf "%dx webp q85" $maxWidth) -}}
+            {{- $src = $fallback.RelPermalink -}}
+            {{- $width = $fallback.Width -}}
+            {{- $height = $fallback.Height -}}
+            {{- $srcset = $srcset | append (printf "%s %dw" $src $width) -}}
+        {{- end -}}
+    {{- end -}}
+{{- else -}}
+    {{- if strings.HasPrefix $src "/" }}{{ $src = $src | relURL }}{{ end -}}
+{{- end -}}
+<img src="{{ $src | safeURL }}" alt="{{ .alt }}"
+    {{- with $srcset }} srcset="{{ delimit . ", " }}" sizes="{{ $sizes }}"{{ end -}}
+    {{- if $width }} width="{{ $width }}" height="{{ $height }}"{{ end -}}
+    {{- with .title }} title="{{ . }}"{{ end -}}
+    loading="lazy" decoding="async">
+{{- /* Trim whitespace around inline images. */ -}}

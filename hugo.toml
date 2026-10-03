@@ -1,0 +1,58 @@
+baseURL = 'https://remm.dev/'
+locale = 'en-us'
+title = 'Alex Remm'
+
+enableRobotsTXT = true
+
+[params]
+    description = 'Software, engineering, cameras, and personal projects'
+    author = 'Alex Remm'
+
+[taxonomies]
+    tag = 'tags'
+
+[outputs]
+    home = ['HTML', 'RSS']
+    section = ['HTML', 'RSS']
+    taxonomy = ['HTML', 'RSS']
+    term = ['HTML', 'RSS']
+
+[services.rss]
+    limit = 20
+
+[menus]
+
+  [[menus.main]]
+    name = 'Writing'
+    pageRef = '/posts'
+    weight = 10
+
+  [[menus.main]]
+    name = 'Projects'
+    pageRef = '/projects'
+    weight = 20
+
+  [[menus.main]]
+    name = 'About'
+    pageRef = '/about'
+    weight = 30
+
+  [[menus.main]]
+    name = 'GitHub'
+    url = 'https://github.com/alexanderremm'
+    weight = 40
+
+[markup]
+
+  [markup.highlight]
+    style = 'github'
+    lineNos = false
+    noClasses = false
+
+  [markup.goldmark.parser]
+    wrapStandAloneImageWithinParagraph = false
+
+  [markup.tableOfContents]
+    startLevel = 2
+    endLevel = 3
+    ordered = false

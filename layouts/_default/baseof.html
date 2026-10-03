@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="{{ site.Language.Locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} | {{ site.Title }}{{ end }}</title>
+    {{ partial "metadata.html" . }}
+    <link rel="icon" type="image/x-icon" sizes="32x32" href="{{ "favicon.ico" | relURL }}">
+    <link rel="icon" type="image/svg+xml" sizes="any" href="{{ "favicon.svg" | relURL }}">
+    {{ with .OutputFormats.Get "RSS" }}
+    <link rel="alternate" type="application/rss+xml" title="{{ $.Title }}" href="{{ .Permalink }}">
+    {{ end }}
+    {{ $css := slice (resources.Get "css/main.css") (resources.Get "css/syntax-light.css") (resources.Get "css/syntax-dark.css") | resources.Concat "css/site.css" | minify | fingerprint }}
+    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="site-layout">
+<header class="site-sidebar">
+    <div class="sidebar-inner">
+        <a class="site-title" href="{{ site.Home.RelPermalink }}">
+            <span class="site-monogram" aria-hidden="true">AR</span>
+            <span>{{ site.Title }}</span>
+        </a>
+        <p class="site-tagline">Software &amp; engineering.<br>Notes from the workbench.</p>
+        <nav class="site-nav" aria-label="Main navigation">
+            <a href="{{ site.Home.RelPermalink }}"{{ if .IsHome }} aria-current="page"{{ end }}>Home</a>
+            {{ $page := . }}
+            {{ range site.Menus.main }}
+            {{ $active := or ($page.IsMenuCurrent "main" .) ($page.HasMenuCurrent "main" .) }}
+            {{ with .Page }}{{ if .IsAncestor $page }}{{ $active = true }}{{ end }}{{ end }}
+            <a href="{{ .URL }}"{{ if $active }} aria-current="page"{{ end }}>{{ .Name }}</a>
+            {{ end }}
+        </nav>
+    </div>
+</header>
+<div class="site-content">
+<main id="main" class="container">
+    {{ block "main" . }}{{ end }}
+</main>
+<footer class="site-footer container">
+    <span>&copy; {{ now.Year }} {{ site.Params.author }}</span>
+    <nav aria-label="Footer navigation">
+        <a href="{{ "tags/" | relURL }}">Topics</a>
+        <a href="{{ "posts/index.xml" | relURL }}">RSS</a>
+    </nav>
+</footer>
+</div>
+</div>
+</body>
+</html>

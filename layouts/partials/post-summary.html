@@ -1,0 +1,6 @@
+<article class="post-list-item">
+    {{ if .home }}<h3><a href="{{ .page.RelPermalink }}">{{ .page.Title }}</a></h3>
+    {{ else }}<h2><a href="{{ .page.RelPermalink }}">{{ .page.Title }}</a></h2>{{ end }}
+    {{ partial "post-meta.html" .page }}
+    <p class="post-description">{{ .page.Description | default (.page.Summary | plainify | truncate 180) }}</p>
+</article>

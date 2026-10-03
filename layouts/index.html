@@ -1,0 +1,17 @@
+{{ define "main" }}
+<section class="intro">
+    <h1>Hi, I'm <span class="accent-text">{{ site.Params.author }}</span>.</h1>
+    <p class="intro-text">I write about software, engineering, cameras, and the projects I'm working on.</p>
+</section>
+<section class="home-section">
+    <div class="section-heading">
+        <h2>Recent Writing</h2>
+        <a href="{{ "posts/" | relURL }}">All writing &rarr;</a>
+    </div>
+    <div class="post-list">
+        {{ range first 5 ((where site.RegularPages "Section" "posts").ByDate.Reverse) }}
+        {{ partial "post-summary.html" (dict "page" . "home" true) }}
+        {{ else }}<p>Writing is on the way.</p>{{ end }}
+    </div>
+</section>
+{{ end }}
