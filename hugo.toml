@@ -56,3 +56,7 @@ enableRobotsTXT = true
     startLevel = 2
     endLevel = 3
     ordered = false
+
+[caches]
+    [caches.images]
+        dir = ':cacheDir/images'
